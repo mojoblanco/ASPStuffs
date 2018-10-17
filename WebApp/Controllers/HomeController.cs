@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 
@@ -38,6 +39,19 @@ namespace WebApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult TestHangFire()
+        {
+            BackgroundJob.Enqueue(() => Test1());
+
+            return Ok("Done");
+        }
+
+
+        public void Test1()
+        {
+            Console.WriteLine("Gold");
         }
     }
 }
